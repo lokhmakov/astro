@@ -1,4 +1,3 @@
-import 'source-map-support/register.js';
 /* eslint-disable no-console */
 import type { AstroConfig } from './@types/astro';
 
@@ -78,6 +77,7 @@ function printHelp() {
   --no-sitemap          Disable sitemap generation (build only).
   --reload              Clean the cache, reinstalling dependencies.
   --verbose             Enable verbose logging
+  --silent              Disable logging
   --version             Show the version number and exit.
   --help                Show this help message.
 `);

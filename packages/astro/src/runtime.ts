@@ -1,6 +1,6 @@
-import 'source-map-support/register.js';
 import type { LogOptions } from './logger';
 import type { AstroConfig, CollectionResult, CollectionRSS, CreateCollection, Params, RuntimeMode } from './@types/astro';
+import type { CompileError as ICompileError } from '@astrojs/parser';
 
 import resolve from 'resolve';
 import { existsSync, promises as fs } from 'fs';
@@ -16,7 +16,8 @@ import {
   SnowpackConfig,
   startServer as startSnowpackServer,
 } from 'snowpack';
-import { CompileError } from '@astrojs/parser';
+import parser from '@astrojs/parser';
+const { CompileError } = parser;
 import { canonicalURL, getSrcPath, stopTimer } from './build/util.js';
 import { debug, info } from './logger.js';
 import { configureSnowpackLogger } from './snowpack-logger.js';
@@ -49,9 +50,9 @@ type LoadResultSuccess = {
 type LoadResultNotFound = { statusCode: 404; error: Error; collectionInfo?: CollectionInfo };
 type LoadResultRedirect = { statusCode: 301 | 302; location: string; collectionInfo?: CollectionInfo };
 type LoadResultError = { statusCode: 500 } & (
-  | { type: 'parse-error'; error: CompileError }
+  | { type: 'parse-error'; error: ICompileError }
   | { type: 'ssr'; error: Error }
-  | { type: 'not-found'; error: CompileError }
+  | { type: 'not-found'; error: ICompileError }
   | { type: 'unknown'; error: Error }
 );
 
@@ -263,7 +264,7 @@ async function load(config: RuntimeConfig, rawPathname: string | undefined): Pro
           `[${reqPath}]
     The window object is not available during server-side rendering (SSR).
     Try using \`import.meta.env.SSR\` to write SSR-friendly code.
-    https://github.com/snowpackjs/astro/blob/main/docs/reference/api-reference.md#importmeta`
+    https://docs.astro.build/reference/api-reference/#importmeta`
         ),
       };
     }
@@ -367,7 +368,7 @@ async function createSnowpack(astroConfig: AstroConfig, options: CreateSnowpackO
   const knownEntrypoints: string[] = ['astro/dist/internal/__astro_component.js', 'astro/dist/internal/element-registry.js'];
   for (const renderer of rendererInstances) {
     knownEntrypoints.push(renderer.server);
-    if(renderer.client) {
+    if (renderer.client) {
       knownEntrypoints.push(renderer.client);
     }
     if (renderer.knownEntrypoints) {
@@ -377,8 +378,8 @@ async function createSnowpack(astroConfig: AstroConfig, options: CreateSnowpackO
     knownEntrypoints.push(...renderer.hydrationPolyfills);
   }
   const external = snowpackExternals.concat([]);
-  for(const renderer of rendererInstances) {
-    if(renderer.external) {
+  for (const renderer of rendererInstances) {
+    if (renderer.external) {
       external.push(...renderer.external);
     }
   }
@@ -418,12 +419,12 @@ async function createSnowpack(astroConfig: AstroConfig, options: CreateSnowpackO
     packageOptions: {
       knownEntrypoints,
       external,
-    }
+    },
   });
 
   const polyfillNode = (snowpackConfig.packageOptions as any).polyfillNode as boolean;
-  if(!polyfillNode) {
-    snowpackConfig.alias = Object.fromEntries(nodeBuiltinsMap);
+  if (!polyfillNode) {
+    snowpackConfig.alias = Object.assign({}, Object.fromEntries(nodeBuiltinsMap), snowpackConfig.alias ?? {});
   }
 
   snowpack = await startSnowpackServer(

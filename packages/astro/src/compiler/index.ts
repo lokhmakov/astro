@@ -1,4 +1,3 @@
-import 'source-map-support/register.js';
 import type { CompileResult, TransformResult } from '../@types/astro';
 import type { CompileOptions } from '../@types/compiler.js';
 
@@ -113,25 +112,37 @@ export async function compileComponent(source: string, { compileOptions, filenam
   // return template
   let moduleJavaScript = `
 import fetch from 'node-fetch';
-
-// <script astro></script>
 ${result.imports.join('\n')}
-${result.hasCustomElements ? `
+
+${/* Global Astro Namespace (shadowed & extended by the scoped namespace inside of __render()) */ ''}
+const __TopLevelAstro = {
+  site: new URL('/', ${JSON.stringify(site)}),
+  fetchContent: (globResult) => fetchContent(globResult, import.meta.url),
+};
+const Astro = __TopLevelAstro;
+
+${
+  result.hasCustomElements
+    ? `
 const __astro_element_registry = new AstroElementRegistry({
-  candidates: new Map([${Array.from(result.customElementCandidates).map(([identifier, url]) => `[${identifier}, '${url}']`).join(', ')}])
+  candidates: new Map([${Array.from(result.customElementCandidates)
+    .map(([identifier, url]) => `[${identifier}, '${url}']`)
+    .join(', ')}])
 });
-`.trim() : ''}
+`.trim()
+    : ''
+}
 
 // \`__render()\`: Render the contents of the Astro module.
 import { h, Fragment } from 'astro/dist/internal/h.js';
 const __astroInternal = Symbol('astro.internal');
 async function __render(props, ...children) {
   const Astro = {
+    ...__TopLevelAstro,
     props,
-    site: new URL('/', ${JSON.stringify(site)}),
     css: props[__astroInternal]?.css || [],
     request: props[__astroInternal]?.request || {},
-    isPage: props[__astroInternal]?.isPage || false
+    isPage: props[__astroInternal]?.isPage || false,
   };
 
   ${result.script}

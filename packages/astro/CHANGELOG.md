@@ -1,5 +1,49 @@
 # astro
 
+## 0.18.0-next.4
+
+### Patch Changes
+
+- c82e6be: Fix unfound ./snowpack-plugin-jsx.cjs error
+
+## 0.18.0-next.3
+
+### Minor Changes
+
+- Add support for [the new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html) for React 17 and Preact.
+- Add support for [Solid](https://www.solidjs.com/) when using the new [`@astrojs/renderer-solid`](https://npm.im/@astrojs/renderer-solid) package.
+
+### Patch Changes
+
+- 4a601ad: Restores the ability to use Fragment in astro components
+- Updated dependencies [bd18e14]
+- Updated dependencies [bd18e14]
+  - @astrojs/renderer-preact@0.2.0-next.0
+  - @astrojs/renderer-react@0.2.0-next.0
+
+## 0.18.0-next.2
+
+### Minor Changes
+
+- f67e8f5: New Collections API (createCollection)
+
+  BREAKING CHANGE: The expected return format from createCollection() has been changed. Visit https://docs.astro.build/core-concepts/collections to learn the new API.
+
+  This feature was implemented with backwards-compatible deprecation warnings, to help you find and update pages that are using the legacy API.
+
+- 40c882a: Fix url to find page with "index" at the end file name
+
+### Patch Changes
+
+- a7e6666: compile javascript to target Node v12.x
+- fb8bf7e: Allow multiple Astro servers to be running simultaneously by choosing random ports if the defaults are taken.
+- 0e761b9: Add ability to specify hostname in devOptions
+- 007c220: Remove custom Astro.fetchContent() glob implementation, use `import.meta.globEager` internally instead.
+- b85e68a: Fixes case where custom elements are not handled within JSX expressions
+- Updated dependencies [a7e6666]
+- Updated dependencies [b85e68a]
+  - @astrojs/parser@0.18.0-next.2
+
 ## 0.18.0-next.1
 
 ### Patch Changes
@@ -49,6 +93,12 @@
   See the new [Slots documentation](https://docs.astro.build/core-concepts/astro-components/#slots) for more information.
 
 - 9859f53: Correcting typo in ReadMe
+
+## 0.17.3
+
+### Patch Changes
+
+- [release/0.17] Update compile target to better support Node v12.
 
 ## 0.17.2
 

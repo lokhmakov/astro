@@ -10,7 +10,9 @@ const defaultConfig = {
   minify: false,
   format: 'esm',
   platform: 'node',
-  target: 'node14.16.1',
+  // There's an issue with 'node12.20' compiling ESM to CJS
+  // so use 'node13.2' instead. V8 support should be similar.
+  target: 'node13.2',
   sourcemap: 'inline',
   sourcesContent: false,
 };
@@ -57,13 +59,12 @@ export default async function build(...args) {
     },
     entryPoints,
     outdir,
-    external,
     format,
     plugins: [svelte({ isDev })],
   });
 
   process.on('beforeExit', () => {
-    builder.stop?.();
+    builder.stop && builder.stop();
   });
 }
 

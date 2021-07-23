@@ -117,8 +117,7 @@ StylesSSR('Astro scoped styles', async ({ runtime }) => {
       return match;
     });
 
-  if (!scopedClass) throw new Error(`Astro component missing scoped class`);
-
+  assert.ok(scopedClass, `Astro component missing scoped class`);
   assert.match(el1.attr('class'), `blue ${scopedClass}`);
   assert.match(el2.attr('class'), `visible ${scopedClass}`);
 

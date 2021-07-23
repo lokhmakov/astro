@@ -107,7 +107,8 @@ interface CompileComponentOptions {
 /** Compiles an Astro component */
 export async function compileComponent(source: string, { compileOptions, filename, projectRoot }: CompileComponentOptions): Promise<CompileResult> {
   const result = await transformFromSource(source, { compileOptions, filename, projectRoot });
-  const site = compileOptions.astroConfig.buildOptions.site || `http://localhost:${compileOptions.astroConfig.devOptions.port}`;
+  const { hostname, port } = compileOptions.astroConfig.devOptions;
+  const site = compileOptions.astroConfig.buildOptions.site || `http://${hostname}:${port}`;
 
   // return template
   let moduleJavaScript = `
@@ -133,6 +134,8 @@ const __astro_element_registry = new AstroElementRegistry({
     : ''
 }
 
+${result.createCollection || ''}
+
 // \`__render()\`: Render the contents of the Astro module.
 import { h, Fragment } from 'astro/dist/internal/h.js';
 const __astroInternal = Symbol('astro.internal');
@@ -140,17 +143,15 @@ async function __render(props, ...children) {
   const Astro = {
     ...__TopLevelAstro,
     props,
-    css: props[__astroInternal]?.css || [],
-    request: props[__astroInternal]?.request || {},
-    isPage: props[__astroInternal]?.isPage || false,
+    css: (props[__astroInternal] && props[__astroInternal].css) || [],
+    request: (props[__astroInternal] && props[__astroInternal].request) || {},
+    isPage: (props[__astroInternal] && props[__astroInternal].isPage) || false,
   };
 
   ${result.script}
   return h(Fragment, null, ${result.html});
 }
 export default { isAstroComponent: true, __render };
-
-${result.createCollection || ''}
 
 // \`__renderPage()\`: Render the contents of the Astro module as a page. This is a special flow,
 // triggered by loading a component directly by URL.

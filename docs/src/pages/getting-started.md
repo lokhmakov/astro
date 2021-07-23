@@ -5,6 +5,8 @@ title: Getting Started
 
 Astro is modern static site builder. Learn what Astro is all about from [our homepage](https://astro.build/) or [our release post](https://astro.build/blog/introducing-astro). This page is an overview of the Astro documentation and all related resources.
 
+Looking for a quick overview of what Astro is? [Visit our homepage.](https://astro.build)
+
 ## Try Astro
 
 The easiest way to try Astro is to run `npm init astro` in a new directory on your machine. This CLI command will walk you through starting a new Astro project.
@@ -30,7 +32,7 @@ Like any unfamiliar technology, Astro does have a learning curve. With practice 
 
 When you begin to learn Astro, you'll see many files using the `.astro` file extension. This is the **Astro component syntax**: a special HTML-like file format that Astro uses for templating. It was designed to feel familiar to anyone with HTML or JSX experience.
 
-Our guide on [Astro components](/core-concepts/astro-components) walks you through the new syntax, and is best way to learn.
+Our guide on [Astro components](/core-concepts/astro-components) walks you through the new syntax, and is the best way to learn.
 
 ### API Reference
 

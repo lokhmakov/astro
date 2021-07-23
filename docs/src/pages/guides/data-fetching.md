@@ -7,7 +7,7 @@ Astro components and pages can fetch remote data to help generate your pages. As
 
 ## `fetch()`
 
-Astro pages have access to the global `fetch()` function in their setup script. `fetch()` is a native JavaScript API ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)) that lets you make HTTP requests for things like APIs and resources.
+Astro pages have access to the global `fetch()` function in their setup script. `fetch()` is a native JavaScript API ([MDN<span class="sr-only">- fetch</span>](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)) that lets you make HTTP requests for things like APIs and resources.
 
 Even though Astro component scripts run inside of Node.js (and not in the browser) Astro provides this native API so that you can fetch data at page build time.
 
@@ -25,7 +25,7 @@ console.log(data);
 
 ## Top-level await
 
-`await` is another native JavaScript feature that lets you await the response of some asynchronous promise ([MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)). Astro supports `await` in the top-level of your component script.
+`await` is another native JavaScript feature that lets you await the response of some asynchronous promise ([MDN<span class="sr-only">- await</span>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)). Astro supports `await` in the top-level of your component script.
 
 **Important:** These are not yet available inside of non-page Astro components. Instead, do all of your data loading inside of your pages, and then pass them to your components as props.
 
@@ -55,7 +55,7 @@ const Movies: FunctionalComponent = () => {
 export default Movies;
 ```
 
-If you load a component using `node-fetch` [interactively](/core-concepts/component-hydration), with `client:load`, `client:visible`, etc., you'll need to either not use `node-fetch` or switch to an [isomorphic](https://en.wikipedia.org/wiki/Isomorphic_JavaScript) library that will run both at build time and on the client, as the [`node-fetch` README.md](https://github.com/node-fetch/node-fetch#motivation) reccomends:
+If you load a component using `node-fetch` [interactively](/core-concepts/component-hydration), with `client:load`, `client:visible`, etc., you'll need to either not use `node-fetch` or switch to an [isomorphic](https://en.wikipedia.org/wiki/Isomorphic_JavaScript) library that will run both at build time and on the client, as the [`node-fetch` README.md](https://github.com/node-fetch/node-fetch#motivation) recommends:
 
 > Instead of implementing XMLHttpRequest in Node.js to run browser-specific [Fetch polyfill](https://github.com/github/fetch), why not go from native http to fetch API directly? Hence, node-fetch, minimal code for a window.fetch compatible API on Node.js runtime.
 >

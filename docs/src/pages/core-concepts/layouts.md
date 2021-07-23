@@ -41,7 +41,7 @@ const {title} = Astro.props;
 
 📚 The `<slot />` element lets Astro components define where any children elements (passed to the layout) should go. Learn more about how `<slot/>` works in our [Astro Component guide.](/core-concepts/astro-components)
 
-Once you have your first layout, You can use it like you would any other component on your page. Remember that your layout contains your page `<html>`, `<head>`, and `<body>`. You only need to provide the custom page content.
+Once you have your first layout, you can use it like you would any other component on your page. Remember that your layout contains your page `<html>`, `<head>`, and `<body>`. You only need to provide the custom page content.
 
 ```astro
 ---
@@ -130,7 +130,7 @@ This blog post will be **rendered** inside of the `<PostLayout />` layout.
 
 Markdown pages always pass a `content` prop to their layout, which is useful to grab information about the page, title, metadata, table of contents headers, and more.
 
-```
+```astro
 ---
 // src/layouts/PostLayout.astro
 const { content } = Astro.props;

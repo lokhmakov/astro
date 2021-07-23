@@ -28,7 +28,7 @@ For example, this three-line file is a valid Astro component:
 
 An Astro component represents some snippet of HTML in your project. This can be a reusable component, or an entire page of HTML including `<html>`, `<head>` and `<body>` elements. See our guide on [Astro Pages](/core-concepts/astro-pages) to learn how to build your first full HTML page with Astro.
 
-**Every Astro component must include an HTML template.** While you can enhance your component in several ways (see below) at the end of the day its the HTML template that dictates what your rendered Astro component will look like.
+**Every Astro component must include an HTML template.** While you can enhance your component in several ways (see below), at the end of the day it's the HTML template that dictates what your rendered Astro component will look like.
 
 ### CSS Styles
 
@@ -45,6 +45,7 @@ For best results, you should only have one `<style>` tag per-Astro component. Th
     height: 50px;
     width: 50px;
   }
+</style>
 <div class="circle"></div>
 ```
 
@@ -68,7 +69,7 @@ Sass (an alternative to CSS) is also available via `<style lang="scss">`.
 
 ### Frontmatter Script
 
-To build a dynamic components, we introduce the idea of a frontmatter component script. [Frontmatter](https://jekyllrb.com/docs/front-matter/) is a common pattern in Markdown, where some config/metadata is contained inside a code fence (`---`) at the top of the file. Astro does something similar, but with full support for JavaScript & TypeScript in your components.
+To build dynamic components, we introduce the idea of a frontmatter component script. [Frontmatter](https://jekyllrb.com/docs/front-matter/) is a common pattern in Markdown, where some config/metadata is contained inside a code fence (`---`) at the top of the file. Astro does something similar, but with full support for JavaScript & TypeScript in your components.
 
 Remember that Astro is a server-side templating language, so your component script will run during the build but only the HTML is rendered to the browser. To send JavaScript to the browser, you can use a `<script>` tag in your HTML template or [convert your component to use a frontend framework](/core-concepts/component-hydration) like React, Svelte, Vue, etc.
 
@@ -195,6 +196,8 @@ const { greeting = 'Hello', name } = Astro.props;
 </MyComponent>
 ```
 
+Note that if the `<slot>` tag is not used in the HTML template, any children passed to the component will not be rendered.
+
 Slots become even more powerful when using **named slots**. Rather than a single `<slot>` element which renders _all_ children, named slots allow you to specify multiple places where children should be placed.
 
 > **Note:** The `slot` attribute is not restricted to plain HTML, components can use `slot` as well!
@@ -267,36 +270,6 @@ const items = ["Dog", "Cat", "Platipus"];
   ))}
 </ul>
 ```
-
-### Slots
-
-Sometimes, an Astro component will be passed children. This is especially common for components like sidebars or dialog boxes that represent generic "wrappers” around content.
-
-```astro
-<WrapChildrenWithText>
-  <img src="https://placehold.co/400" />
-<WrapChildrenWithText>
-```
-
-Astro provides a `<slot />` component so that you can control where any children are rendered within the component. This is heavily inspired by the [`<slot>` HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot).
-
-```astro
----
-// Example: components/WrapChildrenWithText.astro
-// Usage: <WrapChildrenWithText><img src="https://placehold.co/400" /><WrapChildrenWithText>
-// Renders: <h1>Begin</h1><img src="https://placehold.co/400" /><h1>End</h1>
----
-<h1>Begin</h1>
-<!-- slot: any given children are injected here -->
-<slot />
-<h1>End</h1>
-```
-
-<!-- TODO: https://github.com/snowpackjs/astro/issues/600
-      If you don't provide a `<slot />` component in your HTML template, any children passed to your component will not be rendered. -->
-
-<!-- TODO: https://github.com/snowpackjs/astro/issues/360
-     Document Named Slots -->
 
 ## Comparing `.astro` versus `.jsx`
 

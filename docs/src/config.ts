@@ -7,6 +7,7 @@ export const sidebar = [
       { text: 'Installation', link: 'installation' },
       { text: 'Quickstart', link: 'quick-start' },
       { text: 'Examples', link: 'examples' },
+      { text: 'Astro vs. X', link: 'comparing-astro-vs-other-tools' },
     ],
   },
   {
@@ -66,3 +67,19 @@ export const sidebar = [
   //   ],
   // },
 ];
+
+export const site = {
+  title: 'Astro Documentation',
+  description: 'Build faster websites with less client-side Javascript.',
+  ogLocale: 'en_US',
+  image: {
+    src: '/default-og-image.png?v=1',
+    alt:
+      'astro logo on a starry expanse of space,' +
+      ' with a purple saturn-like planet floating in the right foreground',
+  },
+  twitter: {
+    site: 'astrodotbuild',
+    creator: 'astrodotbuild',
+  },
+};

@@ -1,9 +1,38 @@
 # Using Svelte with Astro
 
-```
-npm init astro --template framework-svelte
-```
-
 This example showcases Astro's built-in support for [Svelte](https://svelte.dev/).
 
-No configuration is needed to enable Svelte support—just start writing Svelte components in `src/components`.
+## Installation
+
+### Automatic
+
+Bootstrap your Astro project with this template!
+
+```shell
+npm init astro -- --template framework-svelte
+```
+
+### Manual
+
+To use Svelte components in your Astro project:
+
+1. Install `@astrojs/renderer-svelte`
+
+    ```shell
+    npm i @astrojs/renderer-svelte
+    ```
+
+2. Add `"@astrojs/renderer-svelte"` to your `renderers` in `astro.config.mjs`.
+
+    ```js
+    export default {
+      renderers: [
+        "@astrojs/renderer-svelte",
+        // optionally, others...
+      ]
+    }
+    ```
+
+## Usage
+
+Write your Svelte components as `.svelte` files in your project.

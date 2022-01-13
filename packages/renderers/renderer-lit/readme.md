@@ -36,13 +36,15 @@ __src/components/my-element.js__
 ```js
 import { LitElement, html } from 'lit';
 
-export const tagName = 'my-counter';
+export const tagName = 'my-element';
 
-class Counter extends LitElement {
-
+class MyElement extends LitElement {
+  render() {
+    return html` <p>Hello world! From my-element</p> `;
+  }
 }
 
-customElements.define(tagName, Counter);
+customElements.define(tagName, MyElement);
 ```
 
 > Note that exporting the `tagName` is __required__ if you want to use the tag name in your templates. Otherwise you can export and use the constructor, like with non custom element frameworks.
@@ -51,7 +53,7 @@ In your Astro template import this component as a side-effect and use the elemen
 
 __src/pages/index.astro__
 
-```jsx
+```astro
 ---
 import '../components/my-element.js';
 ---
@@ -67,7 +69,7 @@ The renderer automatically handles adding appropriate polyfills for support in b
 
 Hydration is also handled automatically. You can use the same hydration directives such as `client:load`, `client:idle` and `client:visible` as you can with other libraries that Astro supports.
 
-```jsx
+```astro
 ---
 import '../components/my-element.js';
 ---
@@ -76,3 +78,10 @@ import '../components/my-element.js';
 ```
 
 The above will only load the element's JavaScript when the user has scrolled it into view. Since it is server rendered they will not see any jank; it will load and hydrate transparently.
+
+## More Documentation
+
+[Astro Renderer Documentation][renderer-docs]
+
+[astro]: https://astro.build
+[renderer-docs]: https://docs.astro.build/reference/renderer-reference

@@ -1,44 +1,80 @@
-import { suite } from 'uvu';
-import * as assert from 'uvu/assert';
-import { doc } from './test-utils.js';
-import { setup } from './helpers.js';
+import { expect } from 'chai';
+import cheerio from 'cheerio';
+import { loadFixture } from './test-utils.js';
 
-const LitElement = suite('LitElement test');
+let fixture;
 
-setup(LitElement, './fixtures/lit-element');
+const NODE_VERSION = parseFloat(process.versions.node);
+const stripExpressionMarkers = (html) => html.replace(/<!--\/?lit-part-->/g, '');
 
-LitElement('Renders a custom element by tag name', async ({ runtime }) => {
-  // lit SSR is not currently supported on Node.js < 13
-  if (process.versions.node <= '13') {
-    return;
-  }
-  const result = await runtime.load('/');
-  assert.ok(!result.error, `build error: ${result.error}`);
-
-  const $ = doc(result.contents);
-
-  assert.equal($('my-element').attr('foo'), 'bar', 'attributes rendered');
-  assert.ok($('my-element').html().includes(`<div>Testing...</div>`), 'shadow rendered');
+before(async () => {
+	// @lit-labs/ssr/ requires Node 13.9 or higher
+	if (NODE_VERSION < 13.9) {
+		return;
+	}
+	fixture = await loadFixture({
+		projectRoot: './fixtures/lit-element/',
+		renderers: ['@astrojs/renderer-lit'],
+	});
+	await fixture.build();
 });
 
-// Skipped because not supported by Lit
-LitElement.skip('Renders a custom element by the constructor', async ({ runtime }) => {
-  const result = await runtime.load('/ctr');
-  assert.ok(!result.error, `build error: ${result.error}`);
+describe('LitElement test', () => {
+	it('Renders a custom element by tag name', async () => {
+		// @lit-labs/ssr/ requires Node 13.9 or higher
+		if (NODE_VERSION < 13.9) {
+			return;
+		}
+		const html = await fixture.readFile('/index.html');
+		const $ = cheerio.load(html);
 
-  const $ = doc(result.contents);
+		// test 1: attributes rendered – non reactive properties
+		expect($('my-element').attr('foo')).to.equal('bar');
 
-  assert.equal($('my-element').attr('foo'), 'bar', 'attributes rendered');
-  assert.ok($('my-element').html().includes(`<div>Testing...</div>`), 'shadow rendered');
+		// test 2: shadow rendered
+		expect($('my-element').html()).to.include(`<div>Testing...</div>`);
+
+		// test 3: string reactive property set
+		expect(stripExpressionMarkers($('my-element').html())).to.include(`<div id="str">initialized</div>`);
+
+		// test 4: boolean reactive property correctly set
+		// <my-element bool="false"> Lit will equate to true because it uses
+		// this.hasAttribute to determine its value
+		expect(stripExpressionMarkers($('my-element').html())).to.include(`<div id="bool">B</div>`);
+
+		// test 5: object reactive property set
+		// by default objects will be stringifed to [object Object]
+		expect(stripExpressionMarkers($('my-element').html())).to.include(`<div id="data">data: 1</div>`);
+
+		// test 6: reactive properties are not rendered as attributes
+		expect($('my-element').attr('obj')).to.equal(undefined);
+		expect($('my-element').attr('bool')).to.equal(undefined);
+		expect($('my-element').attr('str')).to.equal(undefined);
+
+		// test 7: reflected reactive props are rendered as attributes
+		expect($('my-element').attr('reflectedbool')).to.equal('');
+		expect($('my-element').attr('reflected-str')).to.equal('default reflected string');
+		expect($('my-element').attr('reflected-str-prop')).to.equal('initialized reflected');
+	});
+
+	// Skipped because not supported by Lit
+	it.skip('Renders a custom element by the constructor', async () => {
+		const html = await fixture.fetch('/ctr/index.html');
+		const $ = cheerio.load(html);
+
+		// test 1: attributes rendered
+		expect($('my-element').attr('foo')).to.equal('bar');
+
+		// test 2: shadow rendered
+		expect($('my-element').html()).to.include(`<div>Testing...</div>`);
+	});
 });
 
-// The Lit renderer adds browser globals that interfere with other tests, so remove them now.
-LitElement.after(() => {
-  const globals = Object.keys(globalThis.window || {});
-  globals.splice(globals.indexOf('global'), 1);
-  for (let name of globals) {
-    delete globalThis[name];
-  }
+after(async () => {
+	// The Lit renderer adds browser globals that interfere with other tests, so remove them now.
+	const globals = Object.keys(globalThis.window || {});
+	globals.splice(globals.indexOf('global'), 1);
+	for (let name of globals) {
+		delete globalThis[name];
+	}
 });
-
-LitElement.run();

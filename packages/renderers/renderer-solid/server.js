@@ -1,27 +1,28 @@
-import { createComponent } from 'solid-js';
-import { renderToStringAsync, ssr } from 'solid-js/web/dist/server.js';
+import { renderToString, ssr, createComponent } from 'solid-js/web/dist/server.js';
 
-async function check(Component, props, children) {
-  if (typeof Component !== 'function') return false;
-
-  const { html } = await renderToStaticMarkup(Component, props, children);
-  return typeof html === 'string';
+function check(Component, props, children) {
+	if (typeof Component !== 'function') return false;
+	try {
+		const { html } = renderToStaticMarkup(Component, props, children);
+		return typeof html === 'string';
+	} catch (err) {
+		return false;
+	}
 }
 
-async function renderToStaticMarkup(Component, props, children) {
-  const html = await renderToStringAsync(
-    () => () =>
-      createComponent(Component, {
-        ...props,
-        // In Solid SSR mode, `ssr` creates the expected structure for `children`.
-        // In Solid client mode, `ssr` is just a stub.
-        children: ssr([`<astro-fragment>${children}</astro-fragment>`]),
-      })
-  );
-  return { html };
+function renderToStaticMarkup(Component, props, children) {
+	const html = renderToString(() =>
+		createComponent(Component, {
+			...props,
+			// In Solid SSR mode, `ssr` creates the expected structure for `children`.
+			// In Solid client mode, `ssr` is just a stub.
+			children: children != null ? ssr(`<astro-fragment>${children}</astro-fragment>`) : children,
+		})
+	);
+	return { html: html + `<script>window._$HY||(_$HY={events:[],completed:new WeakSet,r:{}})</script>` };
 }
 
 export default {
-  check,
-  renderToStaticMarkup,
+	check,
+	renderToStaticMarkup,
 };

@@ -1,19 +1,31 @@
 {
   "name": "@astrojs/renderer-preact",
-  "version": "0.2.0-next.0",
+  "description": "Use Preact components within Astro",
+  "version": "0.4.0",
   "type": "module",
+  "author": "withastro",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/withastro/astro.git",
+    "directory": "packages/renderers/renderer-preact"
+  },
+  "bugs": "https://github.com/withastro/astro/issues",
+  "homepage": "https://astro.build",
   "exports": {
     ".": "./index.js",
-    "./client": "./client.js",
-    "./server": "./server.js",
+    "./*": "./*",
+    "./compat": "./compat/index.js",
+    "./client.js": "./client.js",
+    "./server.js": "./server.js",
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "preact": "^10.5.13",
-    "preact-render-to-string": "^5.1.18",
-    "@babel/plugin-transform-react-jsx": "^7.14.5"
+    "@babel/plugin-transform-react-jsx": "^7.16.0",
+    "preact": "~10.5.15",
+    "preact-render-to-string": "^5.1.19"
   },
   "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+    "node": "^14.15.0 || >=16.0.0"
   }
 }

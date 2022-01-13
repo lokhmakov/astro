@@ -1,14 +1,18 @@
 {
   "name": "create-astro",
-  "version": "0.5.1-next.1",
+  "version": "0.7.0",
   "type": "module",
+  "author": "withastro",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/snowpackjs/astro.git",
+    "url": "https://github.com/withastro/astro.git",
     "directory": "packages/create-astro"
   },
+  "bugs": "https://github.com/withastro/astro/issues",
+  "homepage": "https://astro.build",
   "exports": {
-    ".": "./create-astro.js"
+    ".": "./create-astro.mjs"
   },
   "bin": {
     "create-astro": "./create-astro.mjs"
@@ -24,18 +28,19 @@
     "create-astro.js"
   ],
   "dependencies": {
-    "node-fetch": "^2.6.1",
     "@types/degit": "^2.8.2",
+    "@types/node-fetch": "^3.0.0",
     "@types/prompts": "^2.0.12",
     "degit": "^2.8.4",
     "kleur": "^4.1.1",
+    "node-fetch": "^3.0.0",
     "prompts": "^2.4.1",
-    "yargs-parser": "^20.2.7"
+    "yargs-parser": "^21.0.0"
   },
   "devDependencies": {
     "uvu": "^0.5.1"
   },
   "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+    "node": "^14.15.0 || >=16.0.0"
   }
 }

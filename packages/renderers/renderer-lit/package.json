@@ -1,23 +1,27 @@
 {
   "name": "@astrojs/renderer-lit",
-  "version": "0.1.0",
-  "description": "A Lit renderer for Astro",
+  "version": "0.3.0",
+  "description": "Use Lit components within Astro",
   "type": "module",
+  "author": "withastro",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/withastro/astro.git",
+    "directory": "packages/renderers/renderer-lit"
+  },
+  "bugs": "https://github.com/withastro/astro/issues",
+  "homepage": "https://astro.build",
   "exports": {
     ".": "./index.js",
+    "./*": "./*",
     "./server.js": "./server.js",
     "./client-shim.js": "./client-shim.js",
     "./package.json": "./package.json"
   },
-  "files": [
-    "index.js",
-    "client-shim.js",
-    "server.js",
-    "server-shim.js"
-  ],
   "dependencies": {
-    "@lit-labs/ssr": "^1.0.0-rc.1",
+    "@lit-labs/ssr": "^1.0.0",
     "@webcomponents/template-shadowroot": "^0.1.0",
-    "lit": "^2.0.0-rc.2"
+    "lit": "^2.0.2"
   }
 }

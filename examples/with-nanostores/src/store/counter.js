@@ -1,15 +1,15 @@
-import { createStore, getValue } from 'nanostores';
+import { atom } from 'nanostores';
 
-const counter = createStore(() => {
-  counter.set(0);
-});
+const initialValue = { value: 0 };
+
+const counter = atom(initialValue);
 
 function increaseCounter() {
-  counter.set(getValue(counter) + 1);
+	counter.set({ value: counter.get().value + 1 });
 }
 
 function decreaseCounter() {
-  counter.set(getValue(counter) - 1);
+	counter.set({ value: counter.get().value - 1 });
 }
 
 export { counter, increaseCounter, decreaseCounter };

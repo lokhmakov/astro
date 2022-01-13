@@ -1,15 +1,14 @@
-import { createComponent } from 'solid-js/web';
+import { hydrate, createComponent } from 'solid-js/web';
 
-export default (element) => (Component, props) => {
-  // Solid `createComponent` just returns a DOM node with all reactivity
-  // already attached. There's no VDOM, so there's no real need to "mount".
-  // Likewise, `children` can just reuse the nearest `astro-fragment` node.
-  const component = createComponent(Component, {
-    ...props,
-    children: element.querySelector('astro-fragment'),
-  });
+export default (element) => (Component, props, childHTML) => {
+	let children;
+	if (childHTML != null) {
+		children = document.createElement('astro-fragment');
+		children.innerHTML = childHTML;
+	}
 
-  const children = Array.isArray(component) ? component : [component];
-
-  element.replaceChildren(...children);
+	// Using Solid's `hydrate` method ensures that a `root` is created
+	// in order to properly handle reactivity. It also handles
+	// components that are not native HTML elements.
+	hydrate(() => createComponent(Component, { ...props, children }), element);
 };

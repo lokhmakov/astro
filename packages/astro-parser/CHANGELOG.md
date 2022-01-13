@@ -1,5 +1,38 @@
 # @astrojs/parser
 
+## 0.22.0
+
+### Minor Changes
+
+- [#2202](https://github.com/withastro/astro/pull/2202) [`45cea6ae`](https://github.com/withastro/astro/commit/45cea6aec5a310fed4cb8da0d96670d6b99a2539) Thanks [@jonathantneal](https://github.com/jonathantneal)! - Officially drop support for Node v12. The minimum supported version is now Node v14.15+,
+
+## 0.20.3
+
+## 0.20.2
+
+### Patch Changes
+
+- 5d2ea578: fixed an issue using namespaced attributes in astro files
+
+## 0.18.6
+
+## 0.18.5
+
+### Patch Changes
+
+- cd2b5df4: Prevents locking up checking for --- inside of the HTML portion
+
+## 0.18.0
+
+### Patch Changes
+
+- a7e6666: compile javascript to target Node v12.x
+- 294a656: Adds support for global style blocks via `<style global>`
+
+  Be careful with this escape hatch! This is best reserved for uses like importing styling libraries like Tailwind, or changing global CSS variables.
+
+- b85e68a: Fixes case where custom elements are not handled within JSX expressions
+
 ## 0.18.0-next.5
 
 ### Patch Changes
